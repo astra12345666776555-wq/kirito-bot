@@ -1,0 +1,4 @@
+export GEMINI_API_KEY="AQ.Ab8RN6IqiARbZwaRyD-pmFxz-FAYqXHbMqrX7XD-diZf_8cyzQ"
+export GROQ_API_KEY="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"
+export OPENROUTER_API_KEY="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"
+node index.js

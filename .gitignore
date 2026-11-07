@@ -1,0 +1,5 @@
+node_modules/
+sesions/
+cache_audios/
+database.json
+.env

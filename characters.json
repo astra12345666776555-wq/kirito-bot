@@ -1,0 +1,370 @@
+[
+  {
+    "id": "kirito",
+    "nombre": "Kirito",
+    "serie": "Sword Art Online",
+    "genero": "hombre",
+    "valor": 1600,
+    "img": []
+  },
+  {
+    "id": "goku",
+    "nombre": "Son Goku",
+    "serie": "Dragon Ball",
+    "genero": "hombre",
+    "valor": 1500,
+    "img": []
+  },
+  {
+    "id": "gojo",
+    "nombre": "Satoru Gojo",
+    "serie": "Jujutsu Kaisen",
+    "genero": "hombre",
+    "valor": 1400,
+    "img": []
+  },
+  {
+    "id": "levi",
+    "nombre": "Levi Ackerman",
+    "serie": "Shingeki no Kyojin",
+    "genero": "hombre",
+    "valor": 1300,
+    "img": []
+  },
+  {
+    "id": "itachi",
+    "nombre": "Itachi Uchiha",
+    "serie": "Naruto",
+    "genero": "hombre",
+    "valor": 1200,
+    "img": []
+  },
+  {
+    "id": "saitama",
+    "nombre": "Saitama",
+    "serie": "One Punch Man",
+    "genero": "hombre",
+    "valor": 1100,
+    "img": []
+  },
+  {
+    "id": "luffy",
+    "nombre": "Monkey D. Luffy",
+    "serie": "One Piece",
+    "genero": "hombre",
+    "valor": 950,
+    "img": []
+  },
+  {
+    "id": "vegeta",
+    "nombre": "Vegeta",
+    "serie": "Dragon Ball",
+    "genero": "hombre",
+    "valor": 900,
+    "img": []
+  },
+  {
+    "id": "asuna",
+    "nombre": "Asuna Yuuki",
+    "serie": "Sword Art Online",
+    "genero": "mujer",
+    "valor": 900,
+    "img": []
+  },
+  {
+    "id": "zoro",
+    "nombre": "Roronoa Zoro",
+    "serie": "One Piece",
+    "genero": "hombre",
+    "valor": 850,
+    "img": []
+  },
+  {
+    "id": "kakashi",
+    "nombre": "Kakashi Hatake",
+    "serie": "Naruto",
+    "genero": "hombre",
+    "valor": 800,
+    "img": []
+  },
+  {
+    "id": "lelouch",
+    "nombre": "Lelouch Lamperouge",
+    "serie": "Code Geass",
+    "genero": "hombre",
+    "valor": 780,
+    "img": []
+  },
+  {
+    "id": "l",
+    "nombre": "L Lawliet",
+    "serie": "Death Note",
+    "genero": "hombre",
+    "valor": 750,
+    "img": []
+  },
+  {
+    "id": "robin",
+    "nombre": "Nico Robin",
+    "serie": "One Piece",
+    "genero": "mujer",
+    "valor": 700,
+    "img": []
+  },
+  {
+    "id": "spike",
+    "nombre": "Spike Spiegel",
+    "serie": "Cowboy Bebop",
+    "genero": "hombre",
+    "valor": 650,
+    "img": []
+  },
+  {
+    "id": "light",
+    "nombre": "Light Yagami",
+    "serie": "Death Note",
+    "genero": "hombre",
+    "valor": 580,
+    "img": []
+  },
+  {
+    "id": "mikasa",
+    "nombre": "Mikasa Ackerman",
+    "serie": "Shingeki no Kyojin",
+    "genero": "mujer",
+    "valor": 560,
+    "img": []
+  },
+  {
+    "id": "edward",
+    "nombre": "Edward Elric",
+    "serie": "Fullmetal Alchemist",
+    "genero": "hombre",
+    "valor": 550,
+    "img": []
+  },
+  {
+    "id": "sasuke",
+    "nombre": "Sasuke Uchiha",
+    "serie": "Naruto",
+    "genero": "hombre",
+    "valor": 520,
+    "img": []
+  },
+  {
+    "id": "sanji",
+    "nombre": "Sanji",
+    "serie": "One Piece",
+    "genero": "hombre",
+    "valor": 500,
+    "img": []
+  },
+  {
+    "id": "tanjiro",
+    "nombre": "Tanjiro Kamado",
+    "serie": "Kimetsu no Yaiba",
+    "genero": "hombre",
+    "valor": 480,
+    "img": []
+  },
+  {
+    "id": "nami",
+    "nombre": "Nami",
+    "serie": "One Piece",
+    "genero": "mujer",
+    "valor": 450,
+    "img": []
+  },
+  {
+    "id": "naruto",
+    "nombre": "Naruto Uzumaki",
+    "serie": "Naruto",
+    "genero": "hombre",
+    "valor": 590,
+    "img": []
+  },
+  {
+    "id": "alphonse",
+    "nombre": "Alphonse Elric",
+    "serie": "Fullmetal Alchemist",
+    "genero": "hombre",
+    "valor": 400,
+    "img": []
+  },
+  {
+    "id": "killua",
+    "nombre": "Killua Zoldyck",
+    "serie": "Hunter x Hunter",
+    "genero": "hombre",
+    "valor": 420,
+    "img": []
+  },
+  {
+    "id": "usopp",
+    "nombre": "Usopp",
+    "serie": "One Piece",
+    "genero": "hombre",
+    "valor": 250,
+    "img": []
+  },
+  {
+    "id": "chopper",
+    "nombre": "Tony Tony Chopper",
+    "serie": "One Piece",
+    "genero": "hombre",
+    "valor": 200,
+    "img": []
+  },
+  {
+    "id": "krillin",
+    "nombre": "Krillin",
+    "serie": "Dragon Ball",
+    "genero": "hombre",
+    "valor": 180,
+    "img": []
+  },
+  {
+    "id": "yamcha",
+    "nombre": "Yamcha",
+    "serie": "Dragon Ball",
+    "genero": "hombre",
+    "valor": 120,
+    "img": []
+  },
+  {
+    "id": "lloyd",
+    "nombre": "Lloyd Irving",
+    "serie": "Tales of Symphonia",
+    "genero": "hombre",
+    "valor": 150,
+    "img": []
+  },
+  {
+    "id": "ken-takakura",
+    "nombre": "Ken Takakura",
+    "serie": "Dan Da Dan",
+    "genero": "hombre",
+    "valor": 600,
+    "img": []
+  },
+  {
+    "id": "nanamori",
+    "nombre": "Nanamori",
+    "serie": "Strawberry Prince",
+    "genero": "hombre",
+    "valor": 650,
+    "img": []
+  },
+  {
+    "id": "medusa",
+    "nombre": "Medusa",
+    "serie": "Dota Series",
+    "genero": "mujer",
+    "valor": 780,
+    "img": []
+  },
+  {
+    "id": "megami-yuusha-no-rokkotsu-de",
+    "nombre": "Megami (Yuusha no Rokkotsu de)",
+    "serie": "Megami \"Isekai Tensei Nani ni Naritai desu ka\" Ore \"Yuusha no Rokkotsu de\"",
+    "genero": "mujer",
+    "valor": 720,
+    "img": []
+  },
+  {
+    "id": "sophie-tales-of-series",
+    "nombre": "Sophie (Tales of Series)",
+    "serie": "Tales of Series",
+    "genero": "mujer",
+    "valor": 520,
+    "img": []
+  },
+  {
+    "id": "dorothy-counter-side",
+    "nombre": "Dorothy (Counter:Side)",
+    "serie": "Counter:Side",
+    "genero": "mujer",
+    "valor": 580,
+    "img": []
+  },
+  {
+    "id": "ark-tenchi-souzou",
+    "nombre": "Ark (Tenchi Souzou)",
+    "serie": "Tenchi Souzou",
+    "genero": "hombre",
+    "valor": 450,
+    "img": []
+  },
+  {
+    "id": "erakino",
+    "nombre": "Erakino",
+    "serie": "Isekai Mokushiroku Mynoghra",
+    "genero": "mujer",
+    "valor": 560,
+    "img": []
+  },
+  {
+    "id": "mnemosyne",
+    "nombre": "Mnemosyne",
+    "serie": "Last Origin",
+    "genero": "mujer",
+    "valor": 750,
+    "img": []
+  },
+  {
+    "id": "n-villio",
+    "nombre": "N-Villio",
+    "serie": "SHY",
+    "genero": "hombre",
+    "valor": 700,
+    "img": []
+  },
+  {
+    "id": "n-villio-2",
+    "nombre": "N-Villio",
+    "serie": "SHY",
+    "genero": "hombre",
+    "valor": 700,
+    "img": []
+  },
+  {
+    "id": "n-villio-3",
+    "nombre": "N-Villio",
+    "serie": "SHY",
+    "genero": "hombre",
+    "valor": 700,
+    "img": []
+  },
+  {
+    "id": "erakino-2",
+    "nombre": "Erakino",
+    "serie": "Isekai Mokushiroku Mynoghra",
+    "genero": "mujer",
+    "valor": 560,
+    "img": []
+  },
+  {
+    "id": "n-villio-4",
+    "nombre": "N-Villio",
+    "serie": "SHY",
+    "genero": "hombre",
+    "valor": 700,
+    "img": []
+  },
+  {
+    "id": "blipbug",
+    "nombre": "Blipbug",
+    "serie": "Pokémon",
+    "genero": "desconocido",
+    "valor": 520,
+    "img": []
+  },
+  {
+    "id": "mew-world-flipper",
+    "nombre": "Mew (World Flipper)",
+    "serie": "World Flipper",
+    "genero": "mujer",
+    "valor": 650,
+    "img": []
+  }
+]

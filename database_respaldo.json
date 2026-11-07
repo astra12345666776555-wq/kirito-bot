@@ -1,0 +1,61 @@
+{
+  "global": {
+    "usoGlobalDiario": {
+      "fecha": "",
+      "usado": false
+    },
+    "comandosPublicos": {},
+    "modoVV": {},
+    "permitidosVV": [
+      "51947497514",
+      "134935692214494"
+    ],
+    "contadorUsuarios": 1
+  },
+  "grupos": {
+    "120363428303708413@g.us": {
+      "usuarios": {
+        "51947497514@s.whatsapp.net": {
+          "cartera": 0,
+          "banco": 0,
+          "nivel": 1,
+          "xp": 0,
+          "guardianHasta": 0
+        }
+      }
+    },
+    "120363412613358020@g.us": {
+      "usuarios": {
+        "51947497514@s.whatsapp.net": {
+          "cartera": 1000,
+          "banco": 0,
+          "nivel": 1,
+          "xp": 0
+        }
+      }
+    },
+    "120363408783179950@g.us": {
+      "usuarios": {
+        "51947497514@s.whatsapp.net": {
+          "cartera": 1000,
+          "banco": 0,
+          "nivel": 1,
+          "xp": 0
+        }
+      }
+    }
+  },
+  "usuarios": {
+    "51947497514@s.whatsapp.net": {
+      "idUnico": "001",
+      "nombreCustom": "kirito",
+      "alias": "kirito",
+      "edad": "16",
+      "cumple": "26/11",
+      "pais": "Perú",
+      "pasatiempo": "programar",
+      "genero": "bot"
+    }
+  },
+  "matrimonios": {}
+}
