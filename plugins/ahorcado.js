@@ -1,60 +1,87 @@
 import fs from "fs";
+import { generarImagenAhorcado } from "./ahorcadoImage.js";
+import { elegirPalabra } from "./ahorcadoPalabras.js";
+
+// Minúsculas, sin tildes (conserva la ñ)
+function normalizar(s) {
+    return String(s || "").toLowerCase().trim().split("")
+        .map(c => (c === "ñ" ? c : c.normalize("NFD").replace(/[\u0300-\u036f]/g, "")))
+        .join("");
+}
+
+const esLetra = (c) => /^[a-zñ]$/.test(c);
+
+function palabraCompleta(juego) {
+    return juego.clave.split("").every(c => !esLetra(c) || juego.letrasAdivinadas.includes(c));
+}
+
+function progresoTexto(juego) {
+    return juego.clave.split("").map(c => {
+        if (!esLetra(c)) return c === " " ? "  " : c;
+        return juego.letrasAdivinadas.includes(c) ? c.toUpperCase() : "_";
+    }).join(" ");
+}
+
+function captionEstado(juego, prefijo) {
+    let txt = `🎯 *JUEGO DEL AHORCADO*\n\n`;
+    txt += `💡 Pista: *${juego.pista}*\n`;
+    txt += `🔤 Letras: *${juego.clave.replace(/[^a-zñ]/g, "").length}*\n`;
+    txt += `❤️ Intentos: *${juego.intentosRestantes} / ${juego.intentosMaximos}*\n`;
+    txt += `❌ Fallidas: ${juego.letrasErroneas.join(", ").toUpperCase() || "Ninguna"}\n\n`;
+    txt += `> 💡 _Usa_ \`${prefijo}a <letra>\` _o_ \`${prefijo}a <palabra>\` _para adivinar._`;
+    return txt;
+}
+
+async function enviarTablero(sock, chatId, msg, juego, caption, mentions = [], final = null) {
+    let ruta = null;
+    const opciones = msg ? { quoted: msg } : {};
+    try {
+        ruta = await generarImagenAhorcado({
+            palabra: juego.clave,
+            letrasAdivinadas: juego.letrasAdivinadas,
+            letrasErroneas: juego.letrasErroneas,
+            intentosRestantes: juego.intentosRestantes,
+            intentosMaximos: juego.intentosMaximos,
+            final
+        });
+        await sock.sendMessage(chatId, { image: { url: ruta }, caption, mentions }, opciones);
+    } catch (e) {
+        console.error("❌ Error generando/enviando el tablero del ahorcado:", e.message);
+        await sock.sendMessage(chatId, { text: `🔤 ${progresoTexto(juego)}\n\n${caption}`, mentions }, opciones);
+    } finally {
+        if (ruta) { try { fs.unlinkSync(ruta); } catch {} }
+    }
+}
 
 export default {
     name: "ahorcado",
-    description: "Juego del ahorcado local por grupo con premios y lectura de JSON con pistas",
+    description: "Juego del ahorcado local por grupo con premios locales, pistas e imagen generada con Jimp",
     run: async (comando, sock, chatId, msg, args, usuarioActual, prefijoUsado, formatoMoneda, CONFIG, guardarDB, db, obtenerTagUsuario, senderJid) => {
-        let cmdLimpio = (comando || "").toLowerCase().trim();
+        const cmdLimpio = (comando || "").toLowerCase().trim();
+        if (!["ahorcado", "hangman", "a"].includes(cmdLimpio)) return;
 
+        const tag = (jid) => typeof obtenerTagUsuario === "function" ? obtenerTagUsuario(jid) : "@" + jid.split("@")[0];
+
+        // 🛡️ Solo en grupos
+        if (!chatId.endsWith("@g.us")) {
+            if (cmdLimpio === "a") return;
+            return sock.sendMessage(chatId, { text: "⚠️ El juego del ahorcado solo se puede jugar dentro de los grupos." }, { quoted: msg });
+        }
+
+        if (!global.partidasAhorcado) global.partidasAhorcado = {};
+
+        // ================= INICIAR PARTIDA =================
         if (["ahorcado", "hangman"].includes(cmdLimpio)) {
-            // 🛡️ REGLA DE GRUPO: Validar que se use en un grupo
-            if (!chatId.endsWith('@g.us')) {
-                return sock.sendMessage(chatId, { text: '⚠️ El juego del ahorcado solo se puede jugar dentro de los grupos.' }, { quoted: msg });
-            }
-
-            if (!global.partidasAhorcado) global.partidasAhorcado = {};
             if (global.partidasAhorcado[chatId] && global.partidasAhorcado[chatId].activo) {
                 return sock.sendMessage(chatId, { text: "⚠️ ¡Ya hay una partida de Ahorcado en curso en este grupo!" }, { quoted: msg });
             }
 
-            let archivoJson = "palabras_ahorcada.json";
-            let listaPalabras = [];
-
-            try {
-                if (fs.existsSync(archivoJson)) {
-                    let contenido = JSON.parse(fs.readFileSync(archivoJson, "utf8"));
-                    if (Array.isArray(contenido) && contenido.length > 0) {
-                        listaPalabras = contenido.map(item => {
-                            if (typeof item === "string") {
-                                return { palabra: item.toLowerCase().trim(), pista: "Sin pista" };
-                            } else if (item && typeof item.palabra === "string") {
-                                return { 
-                                    palabra: item.palabra.toLowerCase().trim(), 
-                                    pista: item.pista || "Sin pista" 
-                                };
-                            }
-                            return null;
-                        }).filter(item => item && item.palabra.length > 1);
-                    }
-                }
-            } catch (e) {
-                console.log("[AHORCADO ERROR] ❌ Error leyendo " + archivoJson, e);
-            }
-
-            // Lista de respaldo por si el archivo está vacío o no existe
-            if (listaPalabras.length === 0) {
-                listaPalabras = [
-                    { palabra: "moneda", pista: "Tiene un valor" },
-                    { palabra: "banco", pista: "Guarda dinero" },
-                    { palabra: "cambio", pista: "Puede modificar algo" }
-                ];
-            }
-
-            let seleccion = listaPalabras[Math.floor(Math.random() * listaPalabras.length)];
+            const seleccion = elegirPalabra(chatId);
 
             global.partidasAhorcado[chatId] = {
                 activo: true,
                 palabra: seleccion.palabra,
+                clave: normalizar(seleccion.palabra),
                 pista: seleccion.pista,
                 letrasAdivinadas: [],
                 intentosMaximos: 6,
@@ -62,141 +89,91 @@ export default {
                 letrasErroneas: []
             };
 
-            mostrarEstadoAhorcado(sock, chatId);
+            return enviarTablero(sock, chatId, msg, global.partidasAhorcado[chatId], captionEstado(global.partidasAhorcado[chatId], prefijoUsado));
         }
 
+        // ================= ADIVINAR (.a) =================
         if (cmdLimpio === "a") {
-            if (!chatId.endsWith('@g.us')) return;
-
-            let juego = global.partidasAhorcado && global.partidasAhorcado[chatId];
+            const juego = global.partidasAhorcado[chatId];
             if (!juego || !juego.activo) {
                 return sock.sendMessage(chatId, { text: `❌ No hay ninguna partida de Ahorcado activa en este grupo. Inicia una con \`${prefijoUsado}ahorcado\`` }, { quoted: msg });
             }
 
-            let intento = (args[0] || "").toLowerCase().trim();
+            const intentoOriginal = (args || []).join(" ").trim();
+            const intento = normalizar(intentoOriginal);
             if (!intento) {
                 return sock.sendMessage(chatId, { text: `⚠️ Debes escribir una letra o palabra.\nEjemplo: \`${prefijoUsado}a m\` o \`${prefijoUsado}a moneda\`` }, { quoted: msg });
             }
 
-            // Inicializar base de datos local del grupo para el usuario
-            if (!db.grupos) db.grupos = {};
-            if (!db.grupos[chatId]) db.grupos[chatId] = { usuarios: {} };
+            // Inicialización segura de la DB del grupo
+            db.global = db.global || {};
+            db.grupos = db.grupos || {};
+            db.grupos[chatId] = db.grupos[chatId] || {};
+            db.grupos[chatId].usuarios = db.grupos[chatId].usuarios || {};
             if (!db.grupos[chatId].usuarios[senderJid]) {
                 db.grupos[chatId].usuarios[senderJid] = { cartera: 0, banco: 0 };
             }
-            let uGrupo = db.grupos[chatId].usuarios[senderJid];
+            const uGrupo = db.grupos[chatId].usuarios[senderJid];
 
+            const premiar = () => {
+                const premio = juego.clave.replace(/[^a-zñ]/g, "").length * 150;
+                uGrupo.cartera = (uGrupo.cartera || 0) + premio;
+                if (typeof guardarDB === "function") guardarDB();
+                return premio;
+            };
+
+            const terminarGanado = async (titulo) => {
+                const premio = premiar();
+                let cap = `🎉 *VICTORIA EN EL AHORCADO*\n\n${titulo} ${tag(senderJid)}\n`;
+                cap += `🔤 Palabra secreta: *${juego.palabra.toUpperCase()}*\n`;
+                cap += `🪙 *Premio local (Grupo):* +${formatoMoneda(premio)}`;
+                delete global.partidasAhorcado[chatId];
+                return enviarTablero(sock, chatId, msg, juego, cap, [senderJid], "ganado");
+            };
+
+            const terminarPerdido = async (motivo) => {
+                const cap = `💀 *JUEGO TERMINADO*\n\n❌ ${motivo}\n🔤 La palabra secreta era: *${juego.palabra.toUpperCase()}*`;
+                delete global.partidasAhorcado[chatId];
+                return enviarTablero(sock, chatId, msg, juego, cap, [], "perdido");
+            };
+
+            // --- Intento de palabra completa ---
             if (intento.length > 1) {
-                if (intento === juego.palabra) {
-                    let premioCols = juego.palabra.length * 150;
-                    uGrupo.cartera = (uGrupo.cartera || 0) + premioCols;
-                    if (typeof guardarDB === "function") guardarDB();
-
-                    let tagUser = typeof obtenerTagUsuario === "function" ? obtenerTagUsuario(senderJid) : "@" + senderJid.split("@")[0];
-                    let textoGanador = `╭━━━ 🎉 ❮ VICTORIA EN EL AHORCADO ❯ 🎉 ━━━╮\n`;
-                    textoGanador += `┃\n`;
-                    textoGanador += `┃ 👑 Ganador: ${tagUser}\n`;
-                    textoGanador += `┃ 🔤 Palabra secreta: *${juego.palabra.toUpperCase()}*\n`;
-                    textoGanador += `┃ 🪙 *Premio obtenido:* +${formatoMoneda(premioCols)}\n`;
-                    textoGanador += `┃\n`;
-                    textoGanador += `╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯`;
-
-                    delete global.partidasAhorcado[chatId];
-                    return sock.sendMessage(chatId, { text: textoGanador, mentions: [senderJid] }, { quoted: msg });
-                } else {
-                    juego.intentosRestantes--;
-                    if (juego.intentosRestantes <= 0) {
-                        let textoPerdedor = `╭━━━ 💀 ❮ JUEGO TERMINADO ❯ 💀 ━━━╮\n`;
-                        textoPerdedor += `┃\n`;
-                        textoPerdedor += `┃ ❌ ¡Se acabaron los intentos en este grupo!\n`;
-                        textoPerdedor += `┃ 🔤 La palabra secreta era: *${juego.palabra.toUpperCase()}*\n`;
-                        textoPerdedor += `┃\n`;
-                        textoPerdedor += `╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯`;
-                        delete global.partidasAhorcado[chatId];
-                        return sock.sendMessage(chatId, { text: textoPerdedor }, { quoted: msg });
-                    } else {
-                        return sock.sendMessage(chatId, { text: `❌ ¡Palabra incorrecta! Te quedan *${juego.intentosRestantes} intentos* en este grupo.` }, { quoted: msg });
-                    }
+                if (intento === juego.clave) {
+                    return terminarGanado("👑 Ganador:");
                 }
-            }
-
-            let letra = intento[0];
-            if (juego.letrasAdivinadas.includes(letra) || juego.letrasErroneas.includes(letra)) {
-                return sock.sendMessage(chatId, { text: `⚠️ Ya intentaron con la letra *${letra.toUpperCase()}*. Prueben otra.` }, { quoted: msg });
-            }
-
-            if (juego.palabra.includes(letra)) {
-                juego.letrasAdivinadas.push(letra);
-
-                let palabraCompleta = juego.palabra.split("").every(l => juego.letrasAdivinadas.includes(l));
-                if (palabraCompleta) {
-                    let premioCols = juego.palabra.length * 150;
-                    uGrupo.cartera = (uGrupo.cartera || 0) + premioCols;
-                    if (typeof guardarDB === "function") guardarDB();
-
-                    let tagUser = typeof obtenerTagUsuario === "function" ? obtenerTagUsuario(senderJid) : "@" + senderJid.split("@")[0];
-                    let textoGanador = `╭━━━ 🎉 ❮ VICTORIA EN EL AHORCADO ❯ 🎉 ━━━╮\n`;
-                    textoGanador += `┃\n`;
-                    textoGanador += `┃ 👑 ¡Palabra completada por ${tagUser}!\n`;
-                    textoGanador += `┃ 🔤 Palabra: *${juego.palabra.toUpperCase()}*\n`;
-                    textoGanador += `┃ 🪙 *Premio obtenido:* +${formatoMoneda(premioCols)}\n`;
-                    textoGanador += `┃\n`;
-                    textoGanador += `╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯`;
-
-                    delete global.partidasAhorcado[chatId];
-                    return sock.sendMessage(chatId, { text: textoGanador, mentions: [senderJid] }, { quoted: msg });
-                } else {
-                    mostrarEstadoAhorcado(sock, chatId);
-                }
-            } else {
-                juego.letrasErroneas.push(letra);
                 juego.intentosRestantes--;
-
                 if (juego.intentosRestantes <= 0) {
-                    let textoPerdedor = `╭━━━ 💀 ❮ JUEGO TERMINADO ❯ 💀 ━━━╮\n`;
-                    textoPerdedor += `┃\n`;
-                    textoPerdedor += `┃ ❌ ¡Se acabaron los intentos! El monigote fue ahorcado.\n`;
-                    textoPerdedor += `┃ 🔤 La palabra era: *${juego.palabra.toUpperCase()}*\n`;
-                    textoPerdedor += `┃\n`;
-                    textoPerdedor += `╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯`;
-                    delete global.partidasAhorcado[chatId];
-                    return sock.sendMessage(chatId, { text: textoPerdedor }, { quoted: msg });
-                } else {
-                    mostrarEstadoAhorcado(sock, chatId);
+                    return terminarPerdido("¡Se acabaron los intentos en este grupo!");
                 }
+                return enviarTablero(sock, chatId, msg, juego, `❌ ¡Palabra incorrecta! Te quedan *${juego.intentosRestantes} intentos*.\n\n` + captionEstado(juego, prefijoUsado));
             }
+
+            // --- Intento de letra ---
+            const l = intento[0];
+            if (!esLetra(l)) {
+                return sock.sendMessage(chatId, { text: "⚠️ Escribe una letra válida (A-Z)." }, { quoted: msg });
+            }
+
+            if (juego.letrasAdivinadas.includes(l) || juego.letrasErroneas.includes(l)) {
+                return sock.sendMessage(chatId, { text: `⚠️ Ya intentaron con la letra *${l.toUpperCase()}*. Prueben otra.` }, { quoted: msg });
+            }
+
+            if (juego.clave.includes(l)) {
+                juego.letrasAdivinadas.push(l);
+                if (palabraCompleta(juego)) {
+                    return terminarGanado("👑 ¡Palabra completada por");
+                }
+                return enviarTablero(sock, chatId, msg, juego, captionEstado(juego, prefijoUsado));
+            }
+
+            juego.letrasErroneas.push(l);
+            juego.intentosRestantes--;
+
+            if (juego.intentosRestantes <= 0) {
+                return terminarPerdido("¡Se acabaron los intentos! El monigote fue ahorcado.");
+            }
+            return enviarTablero(sock, chatId, msg, juego, captionEstado(juego, prefijoUsado));
         }
     }
 };
-
-function mostrarEstadoAhorcado(sock, chatId) {
-    let juego = global.partidasAhorcado && global.partidasAhorcado[chatId];
-    if (!juego) return;
-
-    let progreso = juego.palabra.split("").map(l => (juego.letrasAdivinadas.includes(l) ? l.toUpperCase() : "_")).join(" ");
-
-    let monigotes = [
-        "  o  \n /|\\ \n / \\ ",
-        "  o  \n /|\\ \n /   ",
-        "  o  \n /|\\ \n     ",
-        "  o  \n /|  \n     ",
-        "  o  \n  |  \n     ",
-        "  o  \n     \n     ",
-        "     \n     \n     "
-    ];
-
-    let dibujo = monigotes[juego.intentosRestantes] || "";
-
-    let txt = `╭━━━ 🎯 ❮ JUEGO DEL AHORCADO ❯ 🎯 ━━━╮\n`;
-    txt += `┃\n`;
-    txt += `\`\`\`\n${dibujo}\n\`\`\`\n`;
-    txt += `┃ 🔤 Palabra: *${progreso}*\n`;
-    txt += `┃ 💡 Pista: *${juego.pista}*\n`;
-    txt += `┃ ❤️ Intentos: *${juego.intentosRestantes} / ${juego.intentosMaximos}*\n`;
-    txt += `┃ ❌ Fallidas: ${juego.letrasErroneas.join(", ").toUpperCase() || "Ninguna"}\n`;
-    txt += `┃\n`;
-    txt += `╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯\n`;
-    txt += `> 💡 _Usa_ \`.a <letra>\` _o_ \`.a <palabra>\` _para adivinar._`;
-
-    sock.sendMessage(chatId, { text: txt });
-}

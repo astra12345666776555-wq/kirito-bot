@@ -8,7 +8,7 @@ import path from "path";
    ════════════════════════════════════════════════════════════════ */
 
 const NOMBRE_BOT = "Kirito Bot";
-const LINK_GRUPO = "https://chat.whatsapp.com/JZI4bsQUjuMCS347qEG2NS?s=cl&p=a&mlu=4";
+const LINK_GRUPO = "https://chat.whatsapp.com/H4z3y300pZWKpqcrgjH609?s=cl&p=a&mlu=4&iam=2";
 
 // Imagen del menú (se usa la primera que exista)
 const IMAGENES_MENU = [

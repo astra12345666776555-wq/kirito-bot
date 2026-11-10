@@ -11,9 +11,12 @@ export default {
                 return sock.sendMessage(chatId, { text: '⚠️ El sistema de trabajo y empleo solo está disponible dentro de los grupos.' }, { quoted: msg });
             }
 
-            // Inicializar estructura del grupo y del usuario en este chat si no existen
-            if (!db.grupos) db.grupos = {};
-            if (!db.grupos[chatId]) db.grupos[chatId] = { usuarios: {} };
+            // 🛡️ Inicialización segura y blindada de la base de datos
+            db.global = db.global || {};
+            db.grupos = db.grupos || {};
+            db.grupos[chatId] = db.grupos[chatId] || {};
+            db.grupos[chatId].usuarios = db.grupos[chatId].usuarios || {};
+            
             if (!db.grupos[chatId].usuarios[senderJid]) {
                 db.grupos[chatId].usuarios[senderJid] = { cartera: 0, banco: 0, nivel: 1, xp: 0 };
             }

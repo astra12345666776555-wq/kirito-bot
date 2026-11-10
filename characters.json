@@ -366,5 +366,77 @@
     "genero": "mujer",
     "valor": 650,
     "img": []
+  },
+  {
+    "id": "lelouch-lamperouge",
+    "nombre": "Lelouch Lamperouge",
+    "serie": "Code Geass",
+    "genero": "hombre",
+    "valor": 780,
+    "img": []
+  },
+  {
+    "id": "asuna-yuuki",
+    "nombre": "Asuna Yuuki",
+    "serie": "Sword Art Online",
+    "genero": "mujer",
+    "valor": 900,
+    "img": []
+  },
+  {
+    "id": "asuna-yuuki-2",
+    "nombre": "Asuna Yuuki",
+    "serie": "Sword Art Online",
+    "genero": "mujer puedes enviar asi?",
+    "valor": 900,
+    "img": []
+  },
+  {
+    "id": "ako-saotome",
+    "nombre": "Ako Saotome",
+    "serie": "Aikatsu!",
+    "genero": "mujer",
+    "valor": 520,
+    "img": []
+  },
+  {
+    "id": "donut",
+    "nombre": "Donut",
+    "serie": "Nekopara",
+    "genero": "mujer",
+    "valor": 550,
+    "img": []
+  },
+  {
+    "id": "chomusuke",
+    "nombre": "Chomusuke",
+    "serie": "Kono Subarashii Sekai ni Shukufuku wo!",
+    "genero": "mujer",
+    "valor": 500,
+    "img": []
+  },
+  {
+    "id": "albel-nox",
+    "nombre": "Albel Nox",
+    "serie": "Star Ocean",
+    "genero": "hombre",
+    "valor": 750,
+    "img": []
+  },
+  {
+    "id": "albel-nox-2",
+    "nombre": "Albel Nox",
+    "serie": "Star Ocean",
+    "genero": "hombre",
+    "valor": 750,
+    "img": []
+  },
+  {
+    "id": "lippia",
+    "nombre": "Lippia",
+    "serie": "Flower Knight Girl",
+    "genero": "mujer",
+    "valor": 550,
+    "img": []
   }
 ]

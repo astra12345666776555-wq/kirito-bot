@@ -3,3 +3,4 @@ sesions/
 cache_audios/
 database.json
 .env
+*.bak
