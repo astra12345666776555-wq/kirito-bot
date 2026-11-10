@@ -1,0 +1,22 @@
+[
+  {
+    "q": "¿Cuál es el planeta más cercano al Sol?",
+    "a": "mercurio"
+  },
+  {
+    "q": "¿En qué año llegó el hombre a la Luna?",
+    "a": "1969"
+  },
+  {
+    "q": "¿Cuál es el río más largo del mundo?",
+    "a": "amazonas"
+  },
+  {
+    "q": "¿Qué lenguaje de programación se usa para este bot?",
+    "a": "javascript"
+  },
+  {
+    "q": "¿Cómo se llama el protagonista principal de Sword Art Online?",
+    "a": "kirito"
+  }
+]

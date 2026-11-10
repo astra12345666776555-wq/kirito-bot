@@ -5,3 +5,4 @@ database.json
 .env
 *.bak
 tmp_*
+tmp_*

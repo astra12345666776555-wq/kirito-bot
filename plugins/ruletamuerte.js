@@ -59,7 +59,7 @@ export default {
         let poderSender = (uSender.nivel || 1) * 10;
         if (Array.isArray(uSender.inventario)) {
             uSender.inventario.forEach(itemNombre => {
-                let armaData = listaArmas.find(a => a.nombre.toLowerCase() === itemNombre.toLowerCase());
+                let nombreItem = String(typeof itemNombre === "string" ? itemNombre : (itemNombre?.nombre || itemNombre?.name || "")).toLowerCase(); let armaData = listaArmas.find(a => String(a.nombre).toLowerCase() === nombreItem);
                 if (armaData) {
                     poderSender += (armaData.bonoCrimen || 10) * 5;
                 }
@@ -70,7 +70,7 @@ export default {
         let poderRival = (uRival.nivel || 1) * 10;
         if (Array.isArray(uRival.inventario)) {
             uRival.inventario.forEach(itemNombre => {
-                let armaData = listaArmas.find(a => a.nombre.toLowerCase() === itemNombre.toLowerCase());
+                let nombreItem = String(typeof itemNombre === "string" ? itemNombre : (itemNombre?.nombre || itemNombre?.name || "")).toLowerCase(); let armaData = listaArmas.find(a => String(a.nombre).toLowerCase() === nombreItem);
                 if (armaData) {
                     poderRival += (armaData.bonoCrimen || 10) * 5;
                 }

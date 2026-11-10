@@ -76,6 +76,20 @@ export default {
             let botinPotencial = Math.floor((victimaLocal.cartera * porcentajePotencial) / 100);
             if (botinPotencial < 1) botinPotencial = 1;
 
+            // 4.5 Guardia por tiempo (comprada en .shop guardias)
+            if (victimaLocal.guardianHasta && victimaLocal.guardianHasta > ahora) {
+                const ms = victimaLocal.guardianHasta - ahora;
+                const h = Math.floor(ms / 3600000);
+                const m = Math.floor((ms % 3600000) / 60000);
+                let txtG = "╭━━━ 🛡️ ❮ ROBO FRUSTRADO ❯ 🛡️ ━━━╮\n";
+                txtG += "┃\n";
+                txtG += "┃ Un guardia protege la cartera de tu objetivo.\n";
+                txtG += "┃ ⏳ Protección restante: *" + h + "h " + m + "m*\n";
+                txtG += "┃\n";
+                txtG += "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯";
+                return sock.sendMessage(chatId, { text: txtG, mentions: [senderJid, objetivoId] }, { quoted: msg });
+            }
+
             // 5. Verificar si la víctima tiene guardia activo con usos disponibles en este grupo
             let tieneGuardiaActivo = false;
             let usosGuardia = victimaLocal.usosGuardia || 0;

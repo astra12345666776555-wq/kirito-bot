@@ -1,0 +1,194 @@
+{
+  "tienda": {
+    "guardias": [
+      {
+        "nombre": "Guardia Novato",
+        "precio": 3000,
+        "tiempoProteccion": 6
+      },
+      {
+        "nombre": "Guardia Veterano",
+        "precio": 10000,
+        "tiempoProteccion": 24
+      },
+      {
+        "nombre": "Guardia Élite",
+        "precio": 25000,
+        "tiempoProteccion": 72
+      },
+      {
+        "nombre": "Escolta Real",
+        "precio": 55000,
+        "tiempoProteccion": 168
+      }
+    ],
+    "armas": [
+      {
+        "nombre": "Navaja",
+        "precio": 1500,
+        "bonoCrimen": 2
+      },
+      {
+        "nombre": "Pistola",
+        "precio": 6000,
+        "bonoCrimen": 5
+      },
+      {
+        "nombre": "Escopeta",
+        "precio": 12000,
+        "bonoCrimen": 8
+      },
+      {
+        "nombre": "Katana Oscura",
+        "precio": 18000,
+        "bonoCrimen": 10
+      },
+      {
+        "nombre": "Rifle de Asalto",
+        "precio": 30000,
+        "bonoCrimen": 13
+      }
+    ],
+    "vehiculos": [
+      {
+        "nombre": "Bicicleta",
+        "precio": 1000,
+        "bonoCrimen": 1
+      },
+      {
+        "nombre": "Moto",
+        "precio": 5000,
+        "bonoCrimen": 3
+      },
+      {
+        "nombre": "Auto Deportivo",
+        "precio": 15000,
+        "bonoCrimen": 6
+      },
+      {
+        "nombre": "Camioneta Blindada",
+        "precio": 30000,
+        "bonoCrimen": 9
+      },
+      {
+        "nombre": "Helicóptero",
+        "precio": 60000,
+        "bonoCrimen": 14
+      }
+    ],
+    "libros": [
+      {
+        "nombre": "Manual del Novato",
+        "precio": 2000,
+        "xp": 50
+      },
+      {
+        "nombre": "Tratado de Estrategia",
+        "precio": 5000,
+        "xp": 150
+      },
+      {
+        "nombre": "Grimorio Prohibido",
+        "precio": 12000,
+        "xp": 400
+      },
+      {
+        "nombre": "Códice del Maestro",
+        "precio": 28000,
+        "xp": 1000
+      }
+    ],
+    "negocios": [
+      {
+        "nombre": "Puesto de Dulces",
+        "precio": 5000,
+        "gananciaHora": 170
+      },
+      {
+        "nombre": "Tienda de Barrio",
+        "precio": 15000,
+        "gananciaHora": 550
+      },
+      {
+        "nombre": "Restaurante",
+        "precio": 40000,
+        "gananciaHora": 1600
+      },
+      {
+        "nombre": "Casino Clandestino",
+        "precio": 120000,
+        "gananciaHora": 5500
+      },
+      {
+        "nombre": "Imperio Tecnológico",
+        "precio": 400000,
+        "gananciaHora": 20000
+      }
+    ],
+    "gacha": [
+      {
+        "nombre": "Reloj de Arena",
+        "precio": 2500,
+        "efecto": "resetRoll",
+        "descripcion": "Reinicia tu cooldown de tirada (rw)"
+      },
+      {
+        "nombre": "Sello de Voto",
+        "precio": 1500,
+        "efecto": "resetVoto",
+        "descripcion": "Reinicia tu cooldown de voto (vote)"
+      }
+    ]
+  },
+  "crimenes": [
+    {
+      "id": 1,
+      "nombre": "Robar una tienda",
+      "minGain": 300,
+      "maxGain": 900,
+      "multa": 400,
+      "probBase": 55
+    },
+    {
+      "id": 2,
+      "nombre": "Carterismo",
+      "minGain": 500,
+      "maxGain": 1500,
+      "multa": 700,
+      "probBase": 50
+    },
+    {
+      "id": 3,
+      "nombre": "Asalto a un banco pequeño",
+      "minGain": 2000,
+      "maxGain": 5000,
+      "multa": 2500,
+      "probBase": 40
+    },
+    {
+      "id": 4,
+      "nombre": "Robo de auto",
+      "minGain": 3000,
+      "maxGain": 7000,
+      "multa": 3500,
+      "probBase": 35
+    },
+    {
+      "id": 5,
+      "nombre": "Contrabando",
+      "minGain": 6000,
+      "maxGain": 14000,
+      "multa": 7000,
+      "probBase": 28
+    },
+    {
+      "id": 6,
+      "nombre": "Golpe al casino",
+      "minGain": 15000,
+      "maxGain": 40000,
+      "multa": 18000,
+      "probBase": 20
+    }
+  ],
+  "bonoCrimenMax": 40
+}

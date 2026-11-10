@@ -10,19 +10,18 @@ function cargarConfig() {
 }
 
 function calcularBonoArmasVehiculos(uGrupo, configJuego) {
+    if (!Array.isArray(uGrupo.inventario)) return 0;
+    const catalogo = [...(configJuego.tienda?.armas || []), ...(configJuego.tienda?.vehiculos || [])];
+    const contados = new Set();
     let bono = 0;
-    if (!uGrupo.inventario || !Array.isArray(uGrupo.inventario)) return bono;
-    const armas = configJuego.tienda?.armas || [];
-    const vehiculos = configJuego.tienda?.vehiculos || [];
-
-    uGrupo.inventario.forEach(item => {
-        const arma = armas.find(a => a.nombre.toLowerCase() === item.toLowerCase());
-        if (arma && arma.bonoCrimen) bono += arma.bonoCrimen;
-
-        const vehiculo = vehiculos.find(v => v.nombre.toLowerCase() === item.toLowerCase());
-        if (vehiculo && vehiculo.bonoCrimen) bono += vehiculo.bonoCrimen;
-    });
-    return bono;
+    for (const item of uGrupo.inventario) {
+        const nombre = String(typeof item === "string" ? item : (item?.nombre || item?.name || "")).toLowerCase();
+        if (!nombre || contados.has(nombre)) continue; // cada objeto cuenta una sola vez
+        const data = catalogo.find(a => String(a.nombre).toLowerCase() === nombre);
+        if (data && data.bonoCrimen) { bono += data.bonoCrimen; contados.add(nombre); }
+    }
+    const tope = Number(configJuego.bonoCrimenMax) || 40;
+    return Math.min(bono, tope);
 }
 
 export default {
