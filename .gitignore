@@ -4,3 +4,4 @@ cache_audios/
 database.json
 .env
 *.bak
+tmp_*
